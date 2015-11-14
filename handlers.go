@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	todoModels "simple-todo-api/models/todo"
 	"strconv"
 )
 
@@ -18,7 +19,7 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
-	if err := json.NewEncoder(w).Encode(todos); err != nil {
+	if err := json.NewEncoder(w).Encode(todoModels.GetAllTodos()); err != nil {
 		panic(err)
 	}
 }
@@ -30,7 +31,7 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 	if todoId, err = strconv.Atoi(vars["todoId"]); err != nil {
 		panic(err)
 	}
-	todo := RepoFindTodo(todoId)
+	todo := todoModels.RepoFindTodo(todoId)
 	if todo.Id > 0 {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
@@ -49,7 +50,7 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func TodoCreate(w http.ResponseWriter, r *http.Request) {
-	var todo Todo
+	var todo todoModels.Todo
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
 		panic(err)
@@ -65,7 +66,7 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	t := RepoCreateTodo(todo)
+	t := todoModels.RepoCreateTodo(todo)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusCreated)
 	if err := json.NewEncoder(w).Encode(t); err != nil {

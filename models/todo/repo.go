@@ -1,4 +1,4 @@
-package main
+package todo
 
 import "fmt"
 
@@ -9,6 +9,10 @@ var todos Todos
 func init() {
 	RepoCreateTodo(Todo{Name: "Write presentation"})
 	RepoCreateTodo(Todo{Name: "Host Go meetup"})
+}
+
+func GetAllTodos() Todos {
+	return todos
 }
 
 func RepoFindTodo(id int) Todo {
