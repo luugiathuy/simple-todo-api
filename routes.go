@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	v1todos "simple-todo-api/controllers/v1/todos"
+)
 
 type Route struct {
 	Name        string
@@ -13,27 +16,21 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"Index",
-		"GET",
-		"/",
-		Index,
-	},
-	Route{
 		"TodoIndex",
 		"GET",
 		"/todos",
-		TodoIndex,
+		v1todos.Index,
 	},
 	Route{
 		"TodoShow",
 		"GET",
 		"/todos/{todoId}",
-		TodoShow,
+		v1todos.Show,
 	},
 	Route{
 		"TodoCreate",
 		"POST",
 		"/todos",
-		TodoCreate,
+		v1todos.Create,
 	},
 }
